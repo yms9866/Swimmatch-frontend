@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Thumb from "./Thumb.jsx";
 
 export default function BookingCard({ provider_id, provider_name, service_name, date, time, place, status }) {

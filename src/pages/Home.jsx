@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Form, useLoaderData } from "react-router";
 import StepItem from "../components/StepItem.jsx";
 import ProviderTile from "../components/ProviderTile.jsx";
 import { getProviders, matchingPrice } from "../services/providers.js";
@@ -17,37 +16,8 @@ const categories = [
 ];
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [location, setLocation] = useState("");
-  const [level, setLevel] = useState("");
-  const [providers, setProviders] = useState([]);
-  const [status, setStatus] = useState("loading");
-  const [request, setRequest] = useState(0);
+  const providers = useLoaderData();
   const topRated = [...providers].sort((a, b) => b.rating - a.rating).slice(0, 3);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    async function load() {
-      setStatus("loading");
-      setProviders([]);
-      try {
-        const data = await getProviders(controller.signal);
-        if (!controller.signal.aborted) {
-          setProviders(data);
-          setStatus("success");
-        }
-      } catch (error) {
-        if (!controller.signal.aborted) setStatus("error");
-      }
-    }
-    load();
-    return () => controller.abort();
-  }, [request]);
-
-  const start = (e) => {
-    e.preventDefault();
-    navigate(`/search?location=${encodeURIComponent(location)}&level=${level}`);
-  };
 
   return (
     <>
@@ -60,13 +30,13 @@ export default function Home() {
             <span>Swimming lessons</span><span>Experienced instructors</span><span>Flexible options</span>
           </div>
         </div>
-        <form className="hero-form" onSubmit={start}>
+        <Form className="hero-form" action="/search" method="get">
           <div className="hero-form-heading"><strong>Find a provider</strong><span>Start with a location and level</span></div>
           <label>Location
-            <input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. Sharjah" />
+            <input name="location" placeholder="e.g. Sharjah" />
           </label>
           <label>Level
-            <select value={level} onChange={(e) => setLevel(e.target.value)}>
+            <select name="level" defaultValue="">
               <option value="">Any level</option>
               <option>Beginner</option>
               <option>Intermediate</option>
@@ -74,7 +44,7 @@ export default function Home() {
             </select>
           </label>
           <button className="btn" type="submit">Explore matches <span aria-hidden="true">→</span></button>
-        </form>
+        </Form>
       </section>
 
       <section className="section">
@@ -100,12 +70,14 @@ export default function Home() {
 
       <section className="section">
         <div className="section-heading"><div><span className="eyebrow">EXPLORE SWIMMATCH</span><h2>Top-rated providers</h2></div><p>Browse highly rated options from the live provider list.</p></div>
-        {status === "loading" && <p role="status">Loading providers…</p>}
-        {status === "error" && <div className="status-message" role="alert"><p>Could not load providers. Check your connection and try again.</p><button className="btn" type="button" onClick={() => setRequest((value) => value + 1)}>Retry</button></div>}
-        {status === "success" && (topRated.length ? <div className="grid">
+        {topRated.length ? <div className="grid">
           {topRated.map((p) => <ProviderTile key={p.id} id={p.id} name={p.name} rating={p.rating} caption={`from AED ${matchingPrice(p)}`} />)}
-        </div> : <p className="muted">No providers are available right now.</p>)}
+        </div> : <p className="muted">No providers are available right now.</p>}
       </section>
     </>
   );
+}
+
+export function homeLoader({ request }) {
+  return getProviders(request.signal);
 }

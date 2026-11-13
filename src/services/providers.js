@@ -2,7 +2,11 @@ const API_BASE = "https://swimmatch.onrender.com";
 
 export async function getJson(path, signal) {
   const response = await fetch(`${API_BASE}${path}`, { signal });
-  if (!response.ok) throw new Error(`Request failed (${response.status})`);
+  if (!response.ok) {
+    const error = new Error(`Request failed (${response.status})`);
+    error.status = response.status;
+    throw error;
+  }
   return response.json();
 }
 

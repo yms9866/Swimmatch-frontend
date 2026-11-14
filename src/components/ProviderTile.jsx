@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Thumb from "./Thumb.jsx";
 
 export default function ProviderTile({ id, name, rating, caption }) {

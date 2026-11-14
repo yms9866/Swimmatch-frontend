@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router";
+import { useProfile } from "../context/ProfileContext.jsx";
+import { useSavedProviders } from "../context/SavedProvidersContext.jsx";
 
 const links = [
   { id: 1, to: "/", label: "Home" },
@@ -8,9 +10,13 @@ const links = [
   { id: 4, to: "/instructors", label: "Instructors" },
   { id: 5, to: "/bookings", label: "Bookings" },
   { id: 6, to: "/profile", label: "Profile" },
+  { id: 7, to: "/saved", label: "Saved" },
 ];
 
 export default function Navbar() {
+  const { state: profileState } = useProfile();
+  const { profile } = profileState;
+  const { savedProviders } = useSavedProviders();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButton = useRef(null);
   const location = useLocation();
@@ -60,7 +66,7 @@ export default function Navbar() {
       <nav id="primary-navigation" className={`nav-links${menuOpen ? " is-open" : ""}`} aria-label="Primary navigation">
         {links.map((l) => (
           <NavLink key={l.id} to={l.to} end={l.to === "/"} className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMenuOpen(false)}>
-            {l.label}
+            {l.to === "/profile" && profile.name ? profile.name.split(" ")[0] : l.to === "/saved" && savedProviders.length ? `${l.label} (${savedProviders.length})` : l.label}
           </NavLink>
         ))}
       </nav>

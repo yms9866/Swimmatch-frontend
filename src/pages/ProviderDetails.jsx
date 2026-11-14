@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLoaderData } from "react-router";
 import Thumb from "../components/Thumb.jsx";
 import { getAvailability, getInstructors, getProvider } from "../services/providers.js";
 import { stars } from "../utils.js";
@@ -7,38 +7,8 @@ import { stars } from "../utils.js";
 const tabs = ["Services", "Schedule", "Instructors", "Reviews", "Map"];
 
 export default function ProviderDetails() {
-  const { id } = useParams();
   const [tab, setTab] = useState("Services");
-  const [provider, setProvider] = useState(null);
-  const [status, setStatus] = useState("loading");
-  const [request, setRequest] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    async function load() {
-      setStatus("loading");
-      setProvider(null);
-      try {
-        const [data, availability, instructors] = await Promise.all([
-          getProvider(id, controller.signal),
-          getAvailability(id, controller.signal),
-          getInstructors(id, controller.signal),
-        ]);
-        if (!controller.signal.aborted) {
-          setProvider({ ...data, availability, instructors });
-          setStatus("success");
-        }
-      } catch (error) {
-        if (!controller.signal.aborted) setStatus(error.message.includes("404") ? "not-found" : "error");
-      }
-    }
-    load();
-    return () => controller.abort();
-  }, [id, request]);
-
-  if (status === "loading") return <p role="status">Loading provider details…</p>;
-  if (status === "error") return <div className="status-message" role="alert"><p>Could not load this provider. Check your connection and try again.</p><button className="btn" type="button" onClick={() => setRequest((value) => value + 1)}>Retry</button></div>;
-  if (status === "not-found") return <><h1>Provider not found</h1><p className="muted">This provider does not exist.</p><Link to="/search" className="btn">Back to search</Link></>;
+  const provider = useLoaderData();
 
   const location = provider.location || {};
   const services = provider.services || [];
@@ -83,4 +53,19 @@ export default function ProviderDetails() {
       </div>
     </>
   );
+}
+
+export async function providerDetailsLoader({ request, params }) {
+  let provider;
+  try {
+    provider = await getProvider(params.id, request.signal);
+  } catch (error) {
+    if (error.status === 404) throw new Response("Provider not found", { status: 404 });
+    throw error;
+  }
+  const [availability, instructors] = await Promise.all([
+    getAvailability(params.id, request.signal),
+    getInstructors(params.id, request.signal),
+  ]);
+  return { ...provider, availability, instructors };
 }

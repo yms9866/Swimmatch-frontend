@@ -1,108 +1,142 @@
 # SwimMatch
 
-**SwimMatch** is an intelligent, location-aware swimming marketplace built with React. It connects swimmers with swimming instructors and service providers through personalized search, filtering, and matching.
+## 1. Project Overview
 
-Users can explore swimming lessons, compare instructors and providers, view provider details, save their preferred providers, manage swimmer profiles, and submit booking requests.
+SwimMatch is a web application that helps users find swimming lessons, instructors, and providers across the UAE. Users can explore available services and filter providers based on their swimming level, lesson type, budget, location, preferred day, and venue.
 
-## Live Application
+The application also allows users to view provider details, compare available options, save favorite providers, manage their profiles, and submit lesson requests.
 
-[SwimMatch – Live Demo](https://swimmatch.vercel.app)
+## 2. Main Features
 
-## Features
+- **Provider Search:** Browse and filter swimming providers based on different preferences.
+- **Services Directory:** Explore available swimming lessons and services.
+- **Instructor Directory:** Browse swimming instructors.
+- **Provider Details:** View individual provider information, services, and availability.
+- **Saved Providers:** Save and revisit favorite providers.
+- **Booking Requests:** Submit and view swimming lesson requests.
+- **User Profile:** Manage personal information and swimming preferences.
 
-- **Browse Services:** Explore available swimming lessons and services.
-- **Find Instructors:** Discover swimming instructors and review their profiles.
-- **Search and Filter:** Filter results based on swimming level, lesson type, budget, location, availability, and other preferences.
-- **Provider Details:** View provider information and available services.
-- **Personalized Matching:** Discover relevant swimming services based on swimmer preferences.
-- **Saved Providers:** Save preferred providers for future reference.
-- **Swimmer Profile:** Create and update swimmer profile information.
-- **Booking Requests:** Submit booking requests and review booking summaries.
-- **Interactive Maps:** View provider locations using OpenStreetMap.
+## 3. Technologies Used
 
-## Technologies
+- React – Frontend user interface.
+- React Router – Application routing and data loading.
+- Vite – Development server and production build tool.
+- JavaScript – Application functionality.
+- CSS – Styling and responsive layout.
+- React Context and useReducer – Application state management.
+- JSON API – Provides provider, service, instructor, availability, and booking data.
+- LocalStorage – Stores user profile information and saved providers locally.
 
-- React
-- JavaScript
-- Vite
-- CSS
-- REST API
-- Browser Local Storage
-- OpenStreetMap
+## 4. Prerequisites
 
-## Prerequisites
+Before running the project, make sure you have the following installed:
 
-- Node.js 22.22 or newer
-- npm (included with Node.js)
-- Internet connection for API and map data
+- **Node.js:** Version 18 or later.
+- **npm:** Installed automatically with Node.js.
+- **Git:** Optional, if cloning the project repository.
 
-## Installation and Setup
-
-Clone the repository and navigate to the project directory.
+You can check your installed versions using:
 
 ```bash
-git clone <repository-url>
-cd <project-directory>
+node -v
+npm -v
 ```
 
-Install dependencies:
+## 5. Installation
+
+1. Download or clone the project.
+2. Open a terminal in the project root directory (`swimmatch`).
+3. Install the required dependencies:
 
 ```bash
 npm install
 ```
 
-Start the development server:
+This command installs the dependencies listed in `package.json` using the provided `package-lock.json`.
+
+## 6. Running the Application
+
+To start the development server, run:
 
 ```bash
 npm run dev
 ```
 
-Open the local URL provided by Vite, usually:
+Vite will display a local URL in the terminal. Open that URL in your browser to access SwimMatch. The default development URL is:
 
-`http://localhost:5173`
+```text
+http://localhost:5173
+```
 
-## Production Build
-
-Create a production build:
+To create a production build, run:
 
 ```bash
 npm run build
 ```
 
-Preview the production build locally:
+To preview the production build locally, run:
 
 ```bash
 npm run preview
 ```
 
-## API Configuration
+## 7. API Configuration and Environment Variables
 
-The application communicates with its backend through a REST API.
+SwimMatch uses an external JSON API to retrieve application data.
 
-- **API Base URL:** https://swimmatch.onrender.com
-- **Configuration:** `src/services/providers.js`
-- **Environment Variables:** No `.env` file or additional environment variables are currently required.
+The API base URL is currently defined directly in:
 
-An active internet connection is required to retrieve provider, service, instructor, booking, and map data.
+`src/services/providers.js`
 
-If the API becomes unavailable, the application displays route-level error messages with an option to retry.
+```javascript
+const API_BASE = "https://swimmatch.onrender.com";
+```
 
-## Data Persistence
+The application uses this API to retrieve provider, service, instructor, availability, booking, and profile data.
 
-The application uses browser Local Storage to preserve selected user information between sessions.
+No API keys or authentication tokens are required or configured in the current project.
 
-The following information is persisted locally:
+No environment variables or `.env` files are required to run the application.
 
-- Swimmer profile details
-- Saved providers
-- Booking summaries
+**Important:** The API must be accessible for features that depend on retrieving server data. If the API is unavailable, those features may not load correctly.
 
-This information is browser-specific and is not automatically synchronized across different devices or browsers.
+## 8. Data Storage
 
-## Maps
+The application uses different storage methods depending on the type of information:
 
-Provider locations are displayed using OpenStreetMap embeds. No API key is required.
+- **User Profiles:** Stored in the browser's LocalStorage.
+- **Saved Providers:** Stored in the browser's LocalStorage.
+- **Booking Requests:** Managed in React state and stored in memory only. They are not permanently saved and will be lost when the application is refreshed.
 
-## Project Status
+## 9. Project Structure
 
-SwimMatch is an academic team project developed as part of the ISTE 340 Client Programming course.
+```text
+swimmatch-phase5/
+│
+├── public/
+│   └── images/
+│
+├── src/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── services/
+│   ├── state/
+│   ├── App.jsx
+│   ├── index.css
+│   ├── main.jsx
+│   └── utils.js
+│
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── README.md
+```
+
+## 10. Additional Notes
+
+- The `node_modules` folder is not included in the submitted project. It is generated by running `npm install`.
+- The `dist` folder is generated when running `npm run build`.
+- No real API keys, passwords, or authentication credentials are included in the project.
+- An active internet connection is required to retrieve data from the external API.

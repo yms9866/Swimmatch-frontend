@@ -40,9 +40,6 @@ export function bookingRequestsReducer(state, action) {
       const booking = sanitizeBooking(action.booking);
       return booking ? [booking, ...state] : state;
     }
-    case "booking/statusChanged":
-      if (!BOOKING_STATUSES.includes(action.status)) return state;
-      return state.map((booking) => booking.id === action.id ? { ...booking, status: action.status } : booking);
     default:
       return state;
   }

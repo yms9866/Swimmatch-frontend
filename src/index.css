@@ -200,8 +200,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--teal); outline: 
 .service-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
 .instructor-actions { display: grid; grid-template-columns: 1fr; gap: .5rem; width: 100%; margin-top: auto; }
 .instructor-actions .btn { width: 100%; margin: 0 !important; }
-.booking-status { max-width: 190px; margin-top: .65rem; font-size: .78rem; }
-.booking-status select { min-height: 38px; padding: .45rem .6rem; }
 .search-tools { padding: 1.25rem; border-radius: 18px; background: linear-gradient(125deg, #fff, var(--panel)); }
 .search-tools label { width: 100%; font-size: .95rem; font-weight: 750; }
 .search-input-wrap { position: relative; display: block; color: var(--teal); }

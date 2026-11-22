@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { useSearchParams } from "react-router";
 import { useBookings } from "../context/BookingContext.jsx";
 import { useProfile } from "../context/ProfileContext.jsx";
 
@@ -62,8 +63,14 @@ function newBookingId() {
 export default function BookingForm({ providers }) {
   const { state: profileState } = useProfile();
   const { dispatch: dispatchBooking } = useBookings();
-  const [state, dispatch] = useReducer(bookingFormReducer, profileState.profile, (profile) => ({
-    values: initialValues(profile), errors: {}, submitted: false, notice: "",
+  const [params] = useSearchParams();
+  const [state, dispatch] = useReducer(bookingFormReducer, {
+    profile: profileState.profile,
+    providerId: params.get("provider_id") || "",
+    serviceId: params.get("service_id") || "",
+  }, ({ profile, providerId, serviceId }) => ({
+    values: { ...initialValues(profile), provider_id: providerId, service_id: serviceId },
+    errors: {}, submitted: false, notice: "",
   }));
   const { values, errors } = state;
   const selectedProvider = providers.find((provider) => String(provider.id) === values.provider_id);
@@ -101,7 +108,7 @@ export default function BookingForm({ providers }) {
       place: values.place === "home" ? "Home visit" : "Provider facility",
       status: "pending",
     } });
-    dispatch({ type: "created", values: initialValues(profileState.profile), notice: "Added to your bookings for this session." });
+    dispatch({ type: "created", values: initialValues(profileState.profile), notice: "Booking added and saved on this device." });
   };
 
   return <form className="profile-form booking-form" onSubmit={submit} noValidate>

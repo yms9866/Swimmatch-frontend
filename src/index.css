@@ -193,6 +193,15 @@ input:focus, select:focus, textarea:focus { border-color: var(--teal); outline: 
 .directory-tools { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 0 0 1.2rem; padding: 1rem 1.2rem; border: 1px solid rgba(183, 201, 196, .7); border-radius: 14px; background: #fff; box-shadow: var(--shadow); }
 .directory-tools label { width: min(100%, 420px); }
 .directory-tools > span { color: var(--muted); font-size: .88rem; font-weight: 700; white-space: nowrap; padding-bottom: .75rem; }
+.catalog-tools { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(130px, 1fr)); align-items: end; }
+.catalog-tools label { width: 100%; }
+.catalog-tools > span { align-self: center; padding: 0; }
+.catalog-tools .clear-filters { justify-self: start; }
+.service-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.instructor-actions { display: grid; grid-template-columns: 1fr; gap: .5rem; width: 100%; margin-top: auto; }
+.instructor-actions .btn { width: 100%; margin: 0 !important; }
+.booking-status { max-width: 190px; margin-top: .65rem; font-size: .78rem; }
+.booking-status select { min-height: 38px; padding: .45rem .6rem; }
 .search-tools { padding: 1.25rem; border-radius: 18px; background: linear-gradient(125deg, #fff, var(--panel)); }
 .search-tools label { width: 100%; font-size: .95rem; font-weight: 750; }
 .search-input-wrap { position: relative; display: block; color: var(--teal); }
@@ -245,6 +254,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--teal); outline: 
   .hero-form { max-width: 560px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .marketplace-layout { grid-template-columns: 1fr; }
+  .catalog-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filters-panel { position: static; max-height: none; overflow: hidden; }
   .filters-panel .search-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -278,6 +288,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--teal); outline: 
   .footer-inner { flex-direction: column; }
   .directory-tools { align-items: stretch; flex-direction: column; }
   .directory-tools > span { padding: 0; }
+  .catalog-tools { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

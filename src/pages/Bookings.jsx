@@ -6,7 +6,7 @@ import { useBookings } from "../context/BookingContext.jsx";
 
 export default function Bookings() {
   const { bookings: existingBookings, providers } = useLoaderData();
-  const { bookings: requestedBookings, dispatch } = useBookings();
+  const { bookings: requestedBookings } = useBookings();
   const [params, setParams] = useSearchParams();
   const formOpen = params.get("create") === "1";
   return <>
@@ -25,7 +25,7 @@ export default function Bookings() {
     <section className="section">
       <div className="section-heading"><div><span className="eyebrow">YOUR REQUESTS</span><h2>Your bookings</h2></div><p>New requests appear here right away.</p></div>
       {requestedBookings.length || existingBookings.length ? <div className="stack">
-        {requestedBookings.map((booking) => <BookingCard key={`request-${booking.id}`} {...booking} onStatusChange={(status) => dispatch({ type: "booking/statusChanged", id: booking.id, status })} />)}
+        {requestedBookings.map((booking) => <BookingCard key={`request-${booking.id}`} {...booking} />)}
         {existingBookings.map((booking) => <BookingCard key={`existing-${booking.id}`} {...booking} />)}
       </div> : <p className="muted">No bookings yet.</p>}
     </section>

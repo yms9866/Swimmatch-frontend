@@ -6,12 +6,12 @@ import { useBookings } from "../context/BookingContext.jsx";
 
 export default function Bookings() {
   const { bookings: existingBookings, providers } = useLoaderData();
-  const { bookings: requestedBookings } = useBookings();
+  const { bookings: requestedBookings, dispatch } = useBookings();
   const [params, setParams] = useSearchParams();
   const formOpen = params.get("create") === "1";
   return <>
     <div className="bookings-heading">
-      <div className="page-heading"><span className="eyebrow">YOUR SWIM SCHEDULE</span><h1>Bookings</h1><p>Request a lesson and keep track of your booking requests for this session.</p></div>
+      <div className="page-heading"><span className="eyebrow">YOUR SWIM SCHEDULE</span><h1>Bookings</h1><p>Request a lesson and update your booking status at any time.</p></div>
       <button className="btn" type="button" aria-expanded={formOpen} aria-controls="booking-request-form" onClick={() => setParams((current) => {
         const next = new URLSearchParams(current);
         if (formOpen) next.delete("create");
@@ -25,7 +25,7 @@ export default function Bookings() {
     <section className="section">
       <div className="section-heading"><div><span className="eyebrow">YOUR REQUESTS</span><h2>Your bookings</h2></div><p>New requests appear here right away.</p></div>
       {requestedBookings.length || existingBookings.length ? <div className="stack">
-        {requestedBookings.map((booking) => <BookingCard key={`request-${booking.id}`} {...booking} />)}
+        {requestedBookings.map((booking) => <BookingCard key={`request-${booking.id}`} {...booking} onStatusChange={(status) => dispatch({ type: "booking/statusChanged", id: booking.id, status })} />)}
         {existingBookings.map((booking) => <BookingCard key={`existing-${booking.id}`} {...booking} />)}
       </div> : <p className="muted">No bookings yet.</p>}
     </section>
